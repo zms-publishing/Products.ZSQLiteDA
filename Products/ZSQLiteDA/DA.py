@@ -16,16 +16,18 @@ __doc__='''%s Database Connection
 $Id: DA.py,v 1.10 2009/08/08 08:18:24 nakagami Exp $''' % database_type
 __version__='$Revision: 1.10 $'[11:-2]
 
-from db import DB, manage_DataSources
-import sys, DABase
+import sys
 from App.special_dtml import HTMLFile
-import Shared.DC.ZRDB.Connection, ThreadLock
+import Shared.DC.ZRDB.Connection
+from . import db
+from . import DABase
+from . import ThreadLock
 _Connection=Shared.DC.ZRDB.Connection.Connection
 
 _connections={}
 _connections_lock=ThreadLock.allocate_lock()
 
-data_sources=manage_DataSources
+data_sources=db.manage_DataSources
 
 addConnectionForm=HTMLFile('dtml/connectionAdd',globals())
 def manage_addZSQLiteConnection(
@@ -75,7 +77,7 @@ class Connection(DABase.Connection):
         try:
             c=_connections
             page_charset = getattr(self, 'management_page_charset', 'utf-8')
-            self._v_database_connection=c[s]=DB(s, page_charset)
+            self._v_database_connection=c[s]=db.DB(s, page_charset)
             return self
         finally:
             _connections_lock.release()

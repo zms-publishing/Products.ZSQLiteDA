@@ -11,30 +11,15 @@
 #
 ##############################################################################
 import os
-import Globals
 from App.ImageFile import ImageFile
+from . import DA
+from . import standard
 classes=('DA.Connection',)
 database_type='SQLite'
-data_dir=os.path.abspath(os.path.join(Globals.data_dir, 'sqlite'))
-
-class SQLiteError(Exception):
-    pass
-
-class QueryError(SQLiteError):
-    pass
 
 misc_={'conn': ImageFile('images/DBAdapterFolder_icon.gif', globals()),
         'table': ImageFile('images/table.gif', globals()),
 }
-
-DA=None
-def getDA():
-    global DA
-    if DA is None:
-        import DA
-    return DA
-
-getDA()
 
 __module_aliases__=(
     ('Products.AqueductSQLite.DA', DA),
@@ -42,17 +27,16 @@ __module_aliases__=(
 
 def manage_addZSQLiteConnectionForm(self, REQUEST, *args, **kw):
     " "
-    DA=getDA()
     return DA.addConnectionForm(
         self, self, REQUEST,
         database_type=database_type,
-        data_dir=data_dir,
+        data_dir=standard.data_dir,
         data_sources=DA.data_sources)
 
 def manage_addZSQLiteConnection(
     self, id, title, connection, REQUEST=None):
     " "
-    return getDA().manage_addZSQLiteConnection(
+    return DA.manage_addZSQLiteConnection(
         self, id, title, connection, REQUEST)
 
 def initialize(context):
@@ -65,4 +49,3 @@ def initialize(context):
         legacy=(manage_addZSQLiteConnectionForm,
                 manage_addZSQLiteConnection),
     )
-

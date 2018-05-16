@@ -10,7 +10,6 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-from db import manage_DataSources
 import Shared.DC.ZRDB.Connection, sys
 from App.special_dtml import HTMLFile
 from ExtensionClass import Base
@@ -59,7 +58,7 @@ class Connection(Shared.DC.ZRDB.Connection.Connection):
         if name=='tableNamed':
             if not hasattr(self, '_v_tables'): self.tpValues()
             return self._v_tables.__of__(self)
-        raise KeyError, name
+        raise KeyError(name)
 
     def manage_wizard(self, tables):
         " "
@@ -79,7 +78,7 @@ class TableBrowserCollection(Acquisition.Implicit):
 class Browser(Base):
     def __getattr__(self, name):
         try: return self._d[name]
-        except KeyError: raise AttributeError, name
+        except KeyError: raise AttributeError(name)
 
 class TableBrowser(Browser, Acquisition.Implicit):
     icon='what'

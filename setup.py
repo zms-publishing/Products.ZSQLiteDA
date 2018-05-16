@@ -26,7 +26,7 @@ setup(name='Products.ZSQLiteDA',
       install_requires=[
           'setuptools',
           'ThreadLock',
-          'Products.ZSQLMethods',
+          'Products.ZSQLMethods>=3.0.2',
       ],
       entry_points="""
       # -*- Entry points: -*-
