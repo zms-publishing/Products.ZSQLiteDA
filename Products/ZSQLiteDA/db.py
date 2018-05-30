@@ -41,12 +41,16 @@ def manage_DataSources():
             % standard.data_dir
         )
 
-    return map(
-        lambda d: (d, ""),
-        filter(
-            lambda f, i=os.path.isfile, d=standard.data_dir, j=os.path.join: i(j(d, f)),
-            os.listdir(standard.data_dir),
-        ),
+    return list(
+        map(
+            lambda d: (d, ""),
+            filter(
+                lambda f, i=os.path.isfile, d=standard.data_dir, j=os.path.join: i(
+                    j(d, f)
+                ),
+                os.listdir(standard.data_dir),
+            ),
+        )
     )
 
 
