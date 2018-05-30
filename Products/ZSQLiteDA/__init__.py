@@ -10,7 +10,6 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-import os
 from App.ImageFile import ImageFile
 from . import DA
 from . import standard

@@ -1,5 +1,4 @@
 import os
-from App.Common import package_home
 from App.config import getConfiguration
 
 data_dir = os.path.abspath(

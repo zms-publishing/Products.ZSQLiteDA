@@ -10,7 +10,7 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-import Shared.DC.ZRDB.Connection, sys
+import Shared.DC.ZRDB.Connection
 from App.special_dtml import HTMLFile
 from ExtensionClass import Base
 import Acquisition

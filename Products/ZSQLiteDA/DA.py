@@ -19,7 +19,6 @@ $Id: DA.py,v 1.10 2009/08/08 08:18:24 nakagami Exp $"""
 )
 __version__ = "$Revision: 1.10 $"[11:-2]
 
-import sys
 from App.special_dtml import HTMLFile
 from threading import Lock
 import Shared.DC.ZRDB.Connection
