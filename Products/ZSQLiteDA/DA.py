@@ -10,11 +10,14 @@
 # FOR A PARTICULAR PURPOSE
 #
 ##############################################################################
-database_type='SQLite'
-__doc__='''%s Database Connection
+database_type = "SQLite"
+__doc__ = (
+    """%s Database Connection
 
-$Id: DA.py,v 1.10 2009/08/08 08:18:24 nakagami Exp $''' % database_type
-__version__='$Revision: 1.10 $'[11:-2]
+$Id: DA.py,v 1.10 2009/08/08 08:18:24 nakagami Exp $"""
+    % database_type
+)
+__version__ = "$Revision: 1.10 $"[11:-2]
 
 import sys
 from App.special_dtml import HTMLFile
@@ -23,65 +26,73 @@ import Shared.DC.ZRDB.Connection
 from . import db
 from . import standard
 from . import DABase
-_Connection=Shared.DC.ZRDB.Connection.Connection
 
-_connections={}
-_connections_lock=Lock()
+_Connection = Shared.DC.ZRDB.Connection.Connection
 
-data_sources=db.manage_DataSources
+_connections = {}
+_connections_lock = Lock()
 
-addConnectionForm=HTMLFile('dtml/connectionAdd',globals())
-def manage_addZSQLiteConnection(
-    self, id, title, connection, REQUEST=None):
+data_sources = db.manage_DataSources
+
+addConnectionForm = HTMLFile("dtml/connectionAdd", globals())
+
+
+def manage_addZSQLiteConnection(self, id, title, connection, REQUEST=None):
     """Add a DB connection to a folder"""
 
     # Note - ZSQLiteDA's connect immediately check is alway false
-    self._setObject(id, Connection(
-        id, title, connection, None))
-    if REQUEST is not None: return self.manage_main(self,REQUEST)
+    self._setObject(id, Connection(id, title, connection, None))
+    if REQUEST is not None:
+        return self.manage_main(self, REQUEST)
+
 
 class Connection(DABase.Connection):
     " "
-    database_type=database_type
-    id='%s_database_connection' % database_type
-    meta_type=title='Z %s Database Connection' % database_type
-    icon='misc_/Z%sDA/conn' % database_type
+    database_type = database_type
+    id = "%s_database_connection" % database_type
+    meta_type = title = "Z %s Database Connection" % database_type
+    icon = "misc_/Z%sDA/conn" % database_type
 
-    manage_properties=HTMLFile('dtml/connectionEdit', globals(),
-                                       data_sources=data_sources)
+    manage_properties = HTMLFile(
+        "dtml/connectionEdit", globals(), data_sources=data_sources
+    )
 
     def connected(self):
-        if hasattr(self, '_v_database_connection'):
+        if hasattr(self, "_v_database_connection"):
             return self._v_database_connection.opened
-        return ''
+        return ""
 
     def title_and_id(self):
-        s=_Connection.inheritedAttribute('title_and_id')(self)
-        if (hasattr(self, '_v_database_connection') and
-            self._v_database_connection.opened):
-            s="%s, which is connected" % s
+        s = _Connection.inheritedAttribute("title_and_id")(self)
+        if (
+            hasattr(self, "_v_database_connection")
+            and self._v_database_connection.opened
+        ):
+            s = "%s, which is connected" % s
         else:
-            s="%s, which is <font color=red> not connected</font>" % s
+            s = "%s, which is <font color=red> not connected</font>" % s
         return s
 
     def title_or_id(self):
-        s=_Connection.inheritedAttribute('title_and_id')(self)
-        if (hasattr(self, '_v_database_connection') and
-            self._v_database_connection.opened):
-            s="%s (connected)" % s
+        s = _Connection.inheritedAttribute("title_and_id")(self)
+        if (
+            hasattr(self, "_v_database_connection")
+            and self._v_database_connection.opened
+        ):
+            s = "%s (connected)" % s
         else:
-            s="%s (<font color=red> not connected</font>)" % s
+            s = "%s (<font color=red> not connected</font>)" % s
         return s
 
     def data_dir(self):
         return standard.data_dir
 
-    def connect(self,s):
+    def connect(self, s):
         _connections_lock.acquire()
         try:
-            c=_connections
-            page_charset = getattr(self, 'management_page_charset', 'utf-8')
-            self._v_database_connection=c[s]=db.DB(s, page_charset)
+            c = _connections
+            page_charset = getattr(self, "management_page_charset", "utf-8")
+            self._v_database_connection = c[s] = db.DB(s, page_charset)
             return self
         finally:
             _connections_lock.release()

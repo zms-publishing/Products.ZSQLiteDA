@@ -14,38 +14,40 @@ import os
 from App.ImageFile import ImageFile
 from . import DA
 from . import standard
-classes=('DA.Connection',)
-database_type='SQLite'
 
-misc_={'conn': ImageFile('images/DBAdapterFolder_icon.gif', globals()),
-        'table': ImageFile('images/table.gif', globals()),
+classes = ("DA.Connection",)
+database_type = "SQLite"
+
+misc_ = {
+    "conn": ImageFile("images/DBAdapterFolder_icon.gif", globals()),
+    "table": ImageFile("images/table.gif", globals()),
 }
 
-__module_aliases__=(
-    ('Products.AqueductSQLite.DA', DA),
-    )
+__module_aliases__ = (("Products.AqueductSQLite.DA", DA),)
+
 
 def manage_addZSQLiteConnectionForm(self, REQUEST, *args, **kw):
     " "
     return DA.addConnectionForm(
-        self, self, REQUEST,
+        self,
+        self,
+        REQUEST,
         database_type=database_type,
         data_dir=standard.data_dir,
-        data_sources=DA.data_sources)
+        data_sources=DA.data_sources,
+    )
 
-def manage_addZSQLiteConnection(
-    self, id, title, connection, REQUEST=None):
+
+def manage_addZSQLiteConnection(self, id, title, connection, REQUEST=None):
     " "
-    return DA.manage_addZSQLiteConnection(
-        self, id, title, connection, REQUEST)
+    return DA.manage_addZSQLiteConnection(self, id, title, connection, REQUEST)
+
 
 def initialize(context):
 
     context.registerClass(
         DA.Connection,
-        permission='Add Z SQLite Database Connections',
-        constructors=(manage_addZSQLiteConnectionForm,
-                      manage_addZSQLiteConnection),
-        legacy=(manage_addZSQLiteConnectionForm,
-                manage_addZSQLiteConnection),
+        permission="Add Z SQLite Database Connections",
+        constructors=(manage_addZSQLiteConnectionForm, manage_addZSQLiteConnection),
+        legacy=(manage_addZSQLiteConnectionForm, manage_addZSQLiteConnection),
     )
