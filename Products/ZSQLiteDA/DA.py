@@ -50,7 +50,7 @@ class Connection(DABase.Connection):
     database_type = database_type
     id = "%s_database_connection" % database_type
     meta_type = title = "Z %s Database Connection" % database_type
-    icon = "misc_/Z%sDA/conn" % database_type
+    zmi_icon = "fa fa-database"
 
     manage_properties = HTMLFile(
         "dtml/connectionEdit", globals(), data_sources=data_sources
